@@ -1,0 +1,1291 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Japanese Script Practice</title><style>:root{--primary:#ff3c5f;--secondary:#5f3cff;--tertiary:#3cff5f;--background:#1c1c24;--text:#ffffff;--correct:#3cff5f;--incorrect:#ff3c5f;--neutral:#5d5d6e;--game-gradient:linear-gradient(135deg, #2c2c38, #1c1c24)}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:var(--background);background-image:var(--game-gradient);color:var(--text);margin:0;padding:0;height:100vh;display:flex;flex-direction:column;overflow-x:hidden}.container{max-width:800px;margin:0 auto;padding:20px;flex:1;display:flex;flex-direction:column;position:relative;z-index:1}header{text-align:center;margin-bottom:20px;position:relative}h1{font-size:2.5rem;background:linear-gradient(90deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;text-shadow:0 0 15px rgba(255,60,95,.3);letter-spacing:1px}.game-screen,.results-screen,.setup-screen{display:none;flex-direction:column;flex:1;animation:fadeIn .4s ease-out}.setup-screen{display:flex}.question-type-options,.script-options,.time-options{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px}.question-type-option,.script-option,.time-option{background-color:var(--neutral);color:var(--text);border:none;border-radius:8px;padding:12px 20px;font-size:1rem;cursor:pointer;transition:all .3s;box-shadow:0 2px 5px rgba(0,0,0,.2)}.question-type-option:hover,.script-option:hover,.time-option:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.3)}.question-type-option.selected,.script-option.selected,.time-option.selected{background:linear-gradient(45deg,var(--secondary),#7a5fff);transform:scale(1.05);box-shadow:0 0 10px rgba(95,60,255,.5)}.start-btn{background:linear-gradient(90deg,var(--primary),var(--secondary));color:var(--text);border:none;border-radius:8px;padding:15px 30px;font-size:1.2rem;cursor:pointer;margin-top:20px;align-self:center;transition:all .3s;box-shadow:0 4px 15px rgba(95,60,255,.4);font-weight:700;letter-spacing:1px}.start-btn:hover{transform:scale(1.05) translateY(-3px);box-shadow:0 6px 20px rgba(95,60,255,.6)}.game-container{display:flex;flex-direction:column;flex:1}.scoreboard{display:flex;justify-content:space-between;margin-bottom:20px}.player{text-align:center;padding:10px;border-radius:8px;width:30%;position:relative;box-shadow:0 3px 10px rgba(0,0,0,.3);transition:all .3s}.player.human{background:linear-gradient(45deg,var(--primary),#ff5a78);border:2px solid var(--primary)}.player.bot1{background:linear-gradient(45deg,var(--secondary),#7a5fff);border:2px solid var(--secondary)}.player.bot2{background:linear-gradient(45deg,var(--tertiary),#5aff78);border:2px solid var(--tertiary)}.player-name{font-weight:700;margin-bottom:5px}.player-score{font-size:1.5rem;transition:all .3s}.score-increment{position:absolute;font-weight:700;color:#fff;opacity:0;font-size:1.2rem;animation:scoreUp 1s forwards}.thinking{position:absolute;top:-20px;left:50%;transform:translateX(-50%);background-color:rgba(0,0,0,.7);padding:5px 10px;border-radius:15px;display:none;animation:pulse 1.5s infinite}.bot-answer-indicator{position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);font-size:.8rem;font-weight:700;display:none;padding:3px 8px;border-radius:10px;box-shadow:0 2px 5px rgba(0,0,0,.2)}.bot-answer-indicator.correct{color:var(--correct);background-color:rgba(60,255,95,.2)}.bot-answer-indicator.incorrect{color:var(--incorrect);background-color:rgba(255,60,95,.2)}.timer-container{width:100%;height:12px;background-color:var(--neutral);border-radius:6px;margin-bottom:20px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.3)}.timer-bar{height:100%;width:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:6px;transition:width .1s linear;box-shadow:0 0 8px rgba(255,60,95,.5)}.question-container{background-color:rgba(255,255,255,.1);padding:25px;border-radius:15px;margin-bottom:20px;text-align:center;box-shadow:0 5px 15px rgba(0,0,0,.3);backdrop-filter:blur(5px);border:1px solid rgba(255,255,255,.05);transition:all .3s}.question{font-size:3rem;margin-bottom:15px;font-weight:700;transition:all .3s}.question-prompt{font-size:1.1rem;margin-bottom:15px;color:#ccc}.answer-grid{display:grid;grid-template-columns:1fr 1fr;grid-gap:15px}.answer-option{background-color:var(--neutral);color:var(--text);border:none;border-radius:12px;padding:18px;font-size:1.2rem;cursor:pointer;transition:all .3s;box-shadow:0 3px 10px rgba(0,0,0,.2);position:relative;overflow:hidden}.answer-option:before{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,transparent,rgba(255,255,255,.1),transparent);transform:translateX(-100%);transition:transform .6s}.answer-option:hover:before{transform:translateX(100%)}.answer-option:hover{transform:translateY(-3px);box-shadow:0 5px 15px rgba(0,0,0,.3)}.answer-option.correct{background-color:var(--correct);animation:correctPulse .6s;box-shadow:0 0 15px rgba(60,255,95,.7)}.answer-option.incorrect{background-color:var(--incorrect);animation:incorrectShake .5s;box-shadow:0 0 15px rgba(255,60,95,.7)}.typing-answer-container{margin-top:10px;text-align:center;display:none}.typing-input{background-color:rgba(255,255,255,.1);color:var(--text);border:2px solid var(--neutral);border-radius:12px;padding:15px;font-size:1.2rem;width:100%;max-width:300px;margin-bottom:15px;box-shadow:0 3px 10px rgba(0,0,0,.2);transition:all .3s}.typing-input:focus{border-color:var(--secondary);outline:0;box-shadow:0 0 10px rgba(95,60,255,.5)}.submit-answer-btn{background:linear-gradient(45deg,var(--secondary),#7a5fff);color:var(--text);border:none;border-radius:12px;padding:12px 25px;font-size:1rem;cursor:pointer;transition:all .3s;box-shadow:0 3px 10px rgba(0,0,0,.2);font-weight:700}.submit-answer-btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(95,60,255,.5)}.feedback-message{margin-top:15px;font-size:1.1rem;min-height:24px;padding:5px 10px;border-radius:10px;display:inline-block;transition:all .3s}.feedback-message.correct{color:var(--correct);background-color:rgba(60,255,95,.1);animation:fadeIn .5s}.feedback-message.incorrect{color:var(--incorrect);background-color:rgba(255,60,95,.1);animation:fadeIn .5s}.results-screen{text-align:center;position:relative}.final-scores{display:flex;justify-content:space-around;margin:30px 0}.final-player{padding:30px 20px;border-radius:15px;width:30%;box-shadow:0 5px 15px rgba(0,0,0,.3);transition:all .5s;position:relative}.final-player.human{background:linear-gradient(45deg,var(--primary),#ff5a78);animation:bounceIn .6s .1s both}.final-player.bot1{background:linear-gradient(45deg,var(--secondary),#7a5fff);animation:bounceIn .6s .3s both}.final-player.bot2{background:linear-gradient(45deg,var(--tertiary),#5aff78);animation:bounceIn .6s .5s both}.final-name{font-weight:700;margin-bottom:15px;font-size:1.2rem}.final-score{font-size:2.5rem;font-weight:700;text-shadow:0 2px 5px rgba(0,0,0,.3)}.play-again-btn{background:linear-gradient(90deg,var(--primary),var(--secondary));color:var(--text);border:none;border-radius:12px;padding:18px 35px;font-size:1.2rem;cursor:pointer;margin-top:30px;align-self:center;transition:all .3s;box-shadow:0 5px 15px rgba(95,60,255,.4);font-weight:700;letter-spacing:1px;animation:bounceIn .6s .8s both}.play-again-btn:hover{transform:scale(1.05) translateY(-3px);box-shadow:0 8px 20px rgba(95,60,255,.6)}.winner-crown{position:absolute;top:-30px;left:50%;transform:translateX(-50%);font-size:2rem;animation:bounceInDown .5s;text-shadow:0 0 10px gold;color:gold}.win-particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}.particle{position:absolute;width:10px;height:10px;background-color:gold;border-radius:50%;opacity:0}.streak-counter{position:absolute;top:10px;right:10px;background:linear-gradient(45deg,#ff3c5f,#5f3cff);padding:5px 10px;border-radius:20px;font-size:.9rem;box-shadow:0 2px 5px rgba(0,0,0,.3);display:flex;align-items:center}.streak-icon{margin-right:5px;font-size:1.2rem}.correct-fx{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:10;display:none}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes correctPulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}@keyframes incorrectShake{0%{transform:translateX(0)}25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-5px)}100%{transform:translateX(0)}}@keyframes scoreUp{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-20px);opacity:0}}@keyframes pulse{0%{opacity:.7}50%{opacity:1}100%{opacity:.7}}@keyframes bounceIn{0%{transform:scale(.3);opacity:0}50%{transform:scale(1.05)}70%{transform:scale(.9)}100%{transform:scale(1);opacity:1}}@keyframes bounceInDown{0%{transform:translateY(-50px) translateX(-50%);opacity:0}60%{transform:translateY(10px) translateX(-50%)}80%{transform:translateY(-5px) translateX(-50%)}100%{transform:translateY(0) translateX(-50%);opacity:1}}@keyframes particleAnimation{0%{transform:translateY(0) translateX(0);opacity:1}100%{transform:translateY(-100px) translateX(var(--random-x));opacity:0}}@keyframes explosionRing{0%{transform:scale(0);opacity:.8}100%{transform:scale(3);opacity:0}}@media (max-width:600px){.answer-grid{grid-template-columns:1fr}.scoreboard{flex-direction:column;align-items:center;gap:10px}.player{width:80%}.final-scores{flex-direction:column;align-items:center;gap:15px}.final-player{width:80%}.question{font-size:2.2rem}}</style></head><body><div class="container"><header><h1>Japanese Tokiru</h1><p>Compete against native Japanese bots and help yourself remember Japanese characters!</p></header><div class="setup-screen"><h2>What scripts to practice?</h2><div class="script-options"><button class="script-option" data-script="hiragana">Hiragana</button><button class="script-option" data-script="katakana">Katakana</button><button class="script-option" data-script="youon">Youon (Kyo, Cho, etc.)</button><button class="script-option" data-script="dakuon">Dakuon + Handakuon</button><button class="script-option" data-script="kanji">Basic Kanji</button><button class="script-option" data-script="advanced-kanji">Advanced Kanji</button></div><h2>What question types to practice?</h2><div class="question-type-options"><button class="question-type-option selected" data-type="select-romaji">Select Romaji/Meaning (4 options)</button><button class="question-type-option" data-type="select-character">Select Japanese Character (4 options)</button><button class="question-type-option" data-type="type-romaji">Type Romaji/Meaning</button></div><h2>What do you want the time limit per question to be?</h2><div class="time-options"><button class="time-option" data-time="5000">5 seconds</button><button class="time-option selected" data-time="10000">10 seconds</button><button class="time-option" data-time="15000">15 seconds</button><button class="time-option" data-time="20000">20 seconds</button></div><button class="start-btn">Start Game</button></div><div class="game-screen"><div class="scoreboard"><div class="player bot1"><div class="thinking">思考中...</div><div class="bot-answer-indicator bot1-indicator"></div><div class="player-name">敬語</div><div class="player-score">0</div></div><div class="player human"><div class="player-name">You</div><div class="player-score">0</div></div><div class="player bot2"><div class="thinking">思考中...</div><div class="bot-answer-indicator bot2-indicator"></div><div class="player-name">たろう</div><div class="player-score">0</div></div></div><div class="timer-container"><div class="timer-bar"></div></div><div class="game-container"><div class="question-container"><div class="question"></div><div class="question-prompt"></div></div><div class="answer-grid"><button class="answer-option" data-index="0"></button><button class="answer-option" data-index="1"></button><button class="answer-option" data-index="2"></button><button class="answer-option" data-index="3"></button></div><div class="typing-answer-container"><input type="text" class="typing-input" placeholder="Type your answer"><button class="submit-answer-btn">Submit</button><div class="feedback-message"></div></div></div><div class="streak-counter" style="display:none"><span class="streak-icon">🔥</span><span class="streak-count">0</span></div><div class="correct-fx"></div></div><div class="results-screen"><h2>Game Over!</h2><div class="final-scores"><div class="final-player bot1"><div class="final-name">敬語</div><div class="final-score">0</div></div><div class="final-player human"><div class="final-name">You</div><div class="final-score">0</div></div><div class="final-player bot2"><div class="final-name">たろう</div><div class="final-score">0</div></div></div><button class="play-again-btn">Play Again</button></div><div class="win-particles"></div></div><script>// Game data
+        const scriptData = {
+            hiragana: [
+                { character: "あ", romaji: "a" },
+                { character: "い", romaji: "i" },
+                { character: "う", romaji: "u" },
+                { character: "え", romaji: "e" },
+                { character: "お", romaji: "o" },
+                { character: "か", romaji: "ka" },
+                { character: "き", romaji: "ki" },
+                { character: "く", romaji: "ku" },
+                { character: "け", romaji: "ke" },
+                { character: "こ", romaji: "ko" },
+                { character: "さ", romaji: "sa" },
+                { character: "し", romaji: "shi" },
+                { character: "す", romaji: "su" },
+                { character: "せ", romaji: "se" },
+                { character: "そ", romaji: "so" },
+                { character: "た", romaji: "ta" },
+                { character: "ち", romaji: "chi" },
+                { character: "つ", romaji: "tsu" },
+                { character: "て", romaji: "te" },
+                { character: "と", romaji: "to" },
+                { character: "な", romaji: "na" },
+                { character: "に", romaji: "ni" },
+                { character: "ぬ", romaji: "nu" },
+                { character: "ね", romaji: "ne" },
+                { character: "の", romaji: "no" },
+                { character: "は", romaji: "ha" },
+                { character: "ひ", romaji: "hi" },
+                { character: "ふ", romaji: "fu" },
+                { character: "へ", romaji: "he" },
+                { character: "ほ", romaji: "ho" },
+                { character: "ま", romaji: "ma" },
+                { character: "み", romaji: "mi" },
+                { character: "む", romaji: "mu" },
+                { character: "め", romaji: "me" },
+                { character: "も", romaji: "mo" },
+                { character: "や", romaji: "ya" },
+                { character: "ゆ", romaji: "yu" },
+                { character: "よ", romaji: "yo" },
+                { character: "ら", romaji: "ra" },
+                { character: "り", romaji: "ri" },
+                { character: "る", romaji: "ru" },
+                { character: "れ", romaji: "re" },
+                { character: "ろ", romaji: "ro" },
+                { character: "わ", romaji: "wa" },
+                { character: "を", romaji: "wo" },
+                { character: "ん", romaji: "n" }
+            ],
+            katakana: [
+                { character: "ア", romaji: "a" },
+                { character: "イ", romaji: "i" },
+                { character: "ウ", romaji: "u" },
+                { character: "エ", romaji: "e" },
+                { character: "オ", romaji: "o" },
+                { character: "カ", romaji: "ka" },
+                { character: "キ", romaji: "ki" },
+                { character: "ク", romaji: "ku" },
+                { character: "ケ", romaji: "ke" },
+                { character: "コ", romaji: "ko" },
+                { character: "サ", romaji: "sa" },
+                { character: "シ", romaji: "shi" },
+                { character: "ス", romaji: "su" },
+                { character: "セ", romaji: "se" },
+                { character: "ソ", romaji: "so" },
+                { character: "タ", romaji: "ta" },
+                { character: "チ", romaji: "chi" },
+                { character: "ツ", romaji: "tsu" },
+                { character: "テ", romaji: "te" },
+                { character: "ト", romaji: "to" },
+                { character: "ナ", romaji: "na" },
+                { character: "ニ", romaji: "ni" },
+                { character: "ヌ", romaji: "nu" },
+                { character: "ネ", romaji: "ne" },
+                { character: "ノ", romaji: "no" },
+                { character: "ハ", romaji: "ha" },
+                { character: "ヒ", romaji: "hi" },
+                { character: "フ", romaji: "fu" },
+                { character: "ヘ", romaji: "he" },
+                { character: "ホ", romaji: "ho" },
+                { character: "マ", romaji: "ma" },
+                { character: "ミ", romaji: "mi" },
+                { character: "ム", romaji: "mu" },
+                { character: "メ", romaji: "me" },
+                { character: "モ", romaji: "mo" },
+                { character: "ヤ", romaji: "ya" },
+                { character: "ユ", romaji: "yu" },
+                { character: "ヨ", romaji: "yo" },
+                { character: "ラ", romaji: "ra" },
+                { character: "リ", romaji: "ri" },
+                { character: "ル", romaji: "ru" },
+                { character: "レ", romaji: "re" },
+                { character: "ロ", romaji: "ro" },
+                { character: "ワ", romaji: "wa" },
+                { character: "ヲ", romaji: "wo" },
+                { character: "ン", romaji: "n" }
+            ],
+            youon: [
+                { character: "きゃ", romaji: "kya" },
+                { character: "きゅ", romaji: "kyu" },
+                { character: "きょ", romaji: "kyo" },
+                { character: "しゃ", romaji: "sha" },
+                { character: "しゅ", romaji: "shu" },
+                { character: "しょ", romaji: "sho" },
+                { character: "ちゃ", romaji: "cha" },
+                { character: "ちゅ", romaji: "chu" },
+                { character: "ちょ", romaji: "cho" },
+                { character: "にゃ", romaji: "nya" },
+                { character: "にゅ", romaji: "nyu" },
+                { character: "にょ", romaji: "nyo" },
+                { character: "ひゃ", romaji: "hya" },
+                { character: "ひゅ", romaji: "hyu" },
+                { character: "ひょ", romaji: "hyo" },
+                { character: "みゃ", romaji: "mya" },
+                { character: "みゅ", romaji: "myu" },
+                { character: "みょ", romaji: "myo" },
+                { character: "りゃ", romaji: "rya" },
+                { character: "りゅ", romaji: "ryu" },
+                { character: "りょ", romaji: "ryo" }
+            ],
+            dakuon: [
+                { character: "が", romaji: "ga" },
+                { character: "ぎ", romaji: "gi" },
+                { character: "ぐ", romaji: "gu" },
+                { character: "げ", romaji: "ge" },
+                { character: "ご", romaji: "go" },
+                { character: "ざ", romaji: "za" },
+                { character: "じ", romaji: "zi" },  // Changed from "ji" to "zi"
+                { character: "ず", romaji: "zu" },
+                { character: "ぜ", romaji: "ze" },
+                { character: "ぞ", romaji: "zo" },
+                { character: "だ", romaji: "da" },
+                { character: "ぢ", romaji: "di" },  // Changed from "ji" to "di"
+                { character: "づ", romaji: "du" },  // Also updated this for consistency
+                { character: "で", romaji: "de" },
+                { character: "ど", romaji: "do" },
+                { character: "ば", romaji: "ba" },
+                { character: "び", romaji: "bi" },
+                { character: "ぶ", romaji: "bu" },
+                { character: "べ", romaji: "be" },
+                { character: "ぼ", romaji: "bo" },
+                { character: "ぱ", romaji: "pa" },
+                { character: "ぴ", romaji: "pi" },
+                { character: "ぷ", romaji: "pu" },
+                { character: "ぺ", romaji: "pe" },
+                { character: "ぽ", romaji: "po" }
+            ],
+            kanji: [
+                { character: "一", meaning: "one", romaji: "ichi" },
+                { character: "二", meaning: "two", romaji: "ni" },
+                { character: "三", meaning: "three", romaji: "san" },
+                { character: "四", meaning: "four", romaji: "shi/yon" },
+                { character: "五", meaning: "five", romaji: "go" },
+                { character: "六", meaning: "six", romaji: "roku" },
+                { character: "七", meaning: "seven", romaji: "shichi/nana" },
+                { character: "八", meaning: "eight", romaji: "hachi" },
+                { character: "九", meaning: "nine", romaji: "kyuu/ku" },
+                { character: "十", meaning: "ten", romaji: "juu" },
+                { character: "百", meaning: "hundred", romaji: "hyaku" },
+                { character: "千", meaning: "thousand", romaji: "sen" },
+                { character: "万", meaning: "ten thousand", romaji: "man" },
+                { character: "日", meaning: "day, sun", romaji: "hi/nichi" },
+                { character: "月", meaning: "month, moon", romaji: "tsuki/getsu" },
+                { character: "火", meaning: "fire", romaji: "hi/ka" },
+                { character: "水", meaning: "water", romaji: "mizu/sui" },
+                { character: "木", meaning: "tree, wood", romaji: "ki/moku" },
+                { character: "金", meaning: "gold, money", romaji: "kane/kin" },
+                { character: "土", meaning: "earth, soil", romaji: "tsuchi/do" }
+            ],
+            "advanced-kanji": [
+                { character: "人", meaning: "person", romaji: "hito/jin/nin" },
+                { character: "山", meaning: "mountain", romaji: "yama/san" },
+                { character: "川", meaning: "river", romaji: "kawa/sen" },
+                { character: "田", meaning: "rice field", romaji: "ta/den" },
+                { character: "力", meaning: "power", romaji: "chikara/ryoku" },
+                { character: "口", meaning: "mouth", romaji: "kuchi/kou" },
+                { character: "手", meaning: "hand", romaji: "te/shu" },
+                { character: "目", meaning: "eye", romaji: "me/moku" },
+                { character: "耳", meaning: "ear", romaji: "mimi/ji" },
+                { character: "足", meaning: "foot, leg", romaji: "ashi/soku" },
+                { character: "見", meaning: "to see", romaji: "mi(ru)/ken" },
+                { character: "行", meaning: "to go", romaji: "i(ku)/kou/gyou" },
+                { character: "来", meaning: "to come", romaji: "ku(ru)/rai" },
+                { character: "書", meaning: "to write", romaji: "ka(ku)/sho" },
+                { character: "読", meaning: "to read", romaji: "yo(mu)/doku" },
+                { character: "聞", meaning: "to hear", romaji: "ki(ku)/bun" },
+                { character: "食", meaning: "to eat", romaji: "ta(beru)/shoku" },
+                { character: "飲", meaning: "to drink", romaji: "no(mu)/in" },
+                { character: "話", meaning: "to speak", romaji: "hana(su)/wa" },
+                { character: "高", meaning: "high, expensive", romaji: "taka(i)/kou" },
+                { character: "安", meaning: "cheap, safe", romaji: "yasu(i)/an" },
+                { character: "新", meaning: "new", romaji: "atara(shii)/shin" },
+                { character: "古", meaning: "old", romaji: "furu(i)/ko" },
+                { character: "大", meaning: "big", romaji: "oo(kii)/dai/tai" },
+                { character: "小", meaning: "small", romaji: "chii(sai)/shou" },
+                { character: "長", meaning: "long", romaji: "naga(i)/chou" },
+                { character: "短", meaning: "short", romaji: "mijika(i)/tan" },
+                { character: "明", meaning: "bright", romaji: "aka(rui)/mei" },
+                { character: "暗", meaning: "dark", romaji: "kura(i)/an" },
+                { character: "春", meaning: "spring", romaji: "haru/shun" },
+                { character: "夏", meaning: "summer", romaji: "natsu/ka" },
+                { character: "秋", meaning: "autumn", romaji: "aki/shuu" },
+                { character: "冬", meaning: "winter", romaji: "fuyu/tou" },
+                { character: "東", meaning: "east", romaji: "higashi/tou" },
+                { character: "西", meaning: "west", romaji: "nishi/sei" },
+                { character: "南", meaning: "south", romaji: "minami/nan" },
+                { character: "北", meaning: "north", romaji: "kita/hoku" },
+                { character: "上", meaning: "up, above", romaji: "ue/jou" },
+                { character: "下", meaning: "down, below", romaji: "shita/ka/ge" },
+                { character: "中", meaning: "middle, inside", romaji: "naka/chuu" }
+            ]
+        };
+
+        // Game state
+        let gameState = {
+            selectedScripts: [],
+            selectedQuestionTypes: ["select-romaji"],
+            questions: [],
+            currentQuestionIndex: 0,
+            scores: {
+                human: 0,
+                bot1: 0,
+                bot2: 0
+            },
+            timer: null,
+            timeLimit: 10000, // Default 10 seconds per question
+            timeRemaining: 0,
+            totalQuestions: 25,
+            allPlayersAnswered: false,
+            waitingForNextQuestion: false,
+            streakCount: 0,
+            streakMultiplier: 1
+        };
+
+        // DOM elements
+        const setupScreen = document.querySelector('.setup-screen');
+        const gameScreen = document.querySelector('.game-screen');
+        const resultsScreen = document.querySelector('.results-screen');
+        const scriptOptions = document.querySelectorAll('.script-option');
+        const questionTypeOptions = document.querySelectorAll('.question-type-option');
+        const timeOptions = document.querySelectorAll('.time-option');
+        const startBtn = document.querySelector('.start-btn');
+        const playAgainBtn = document.querySelector('.play-again-btn');
+        const questionElement = document.querySelector('.question');
+        const questionPromptElement = document.querySelector('.question-prompt');
+        const answerGrid = document.querySelector('.answer-grid');
+        const answerOptions = document.querySelectorAll('.answer-option');
+        const typingAnswerContainer = document.querySelector('.typing-answer-container');
+        const typingInput = document.querySelector('.typing-input');
+        const submitAnswerBtn = document.querySelector('.submit-answer-btn');
+        const feedbackMessage = document.querySelector('.feedback-message');
+        const timerBar = document.querySelector('.timer-bar');
+        const playerScores = {
+            human: document.querySelector('.player.human .player-score'),
+            bot1: document.querySelector('.player.bot1 .player-score'),
+            bot2: document.querySelector('.player.bot2 .player-score')
+        };
+        const finalScores = {
+            human: document.querySelector('.final-player.human .final-score'),
+            bot1: document.querySelector('.final-player.bot1 .final-score'),
+            bot2: document.querySelector('.final-player.bot2 .final-score')
+        };
+        const botThinking = {
+            bot1: document.querySelector('.player.bot1 .thinking'),
+            bot2: document.querySelector('.player.bot2 .thinking')
+        };
+        const botIndicators = {
+            bot1: document.querySelector('.bot1-indicator'),
+            bot2: document.querySelector('.bot2-indicator')
+        };
+        const winParticlesContainer = document.querySelector('.win-particles');
+        const streakCounter = document.querySelector('.streak-counter');
+        const streakCountDisplay = document.querySelector('.streak-count');
+        const correctFx = document.querySelector('.correct-fx');
+
+        // Audio setup
+        // let audioContext;
+        // const initAudio = () => {
+        //     if (!audioContext) {
+        //         try {
+        //             audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        //         } catch (e) {
+        //             console.error('Web Audio API not supported:', e);
+        //         }
+        //     }
+        // };
+        // // Audio setup
+        let audioContext;
+        let gameMusic = document.getElementById('gameMusic');
+        gameMusic.volume = 0.3; // Set initial volume to 30%
+
+        const initAudio = () => {
+            if (!audioContext) {
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (e) {
+                    console.error('Web Audio API not supported:', e);
+                }
+            }
+            
+            // Start background music if not already playing
+            if (gameMusic.paused) {
+                gameMusic.play().catch(e => console.log('Audio playback failed:', e));
+            }
+        };
+
+        function stopGameMusic() {
+            if (!gameMusic.paused) {
+                gameMusic.pause();
+                gameMusic.currentTime = 0;
+            }
+        }
+
+        // Sound effects
+        function playCorrectSound() {
+            initAudio();
+            if (!audioContext) return;
+            
+            try {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+                oscillator.frequency.exponentialRampToValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (e) {
+                console.error('Error playing sound:', e);
+            }
+        }
+
+        function playIncorrectSound() {
+            initAudio();
+            if (!audioContext) return;
+            
+            try {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.type = 'sawtooth';
+                oscillator.frequency.setValueAtTime(196.00, audioContext.currentTime); // G3
+                oscillator.frequency.exponentialRampToValueAtTime(146.83, audioContext.currentTime + 0.2); // D3
+                
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (e) {
+                console.error('Error playing sound:', e);
+            }
+        }
+
+        function playWinSound() {
+            initAudio();
+            if (!audioContext) return;
+            
+            try {
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                
+                notes.forEach((freq, i) => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.type = 'sine';
+                    oscillator.frequency.value = freq;
+                    
+                    gainNode.gain.setValueAtTime(0, audioContext.currentTime + i * 0.12);
+                    gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + i * 0.12 + 0.05);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.12 + 0.4);
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.start(audioContext.currentTime + i * 0.12);
+                    oscillator.stop(audioContext.currentTime + i * 0.12 + 0.4);
+                });
+            } catch (e) {
+                console.error('Error playing win sound:', e);
+            }
+        }
+
+        // Visual effects
+        function createCorrectFx() {
+            correctFx.style.display = 'block';
+            correctFx.innerHTML = '';
+            
+            // Create ring effect
+            const ring = document.createElement('div');
+            ring.style.cssText = `
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                border: 3px solid var(--correct);
+                animation: explosionRing 0.5s forwards;
+            `;
+            correctFx.appendChild(ring);
+            
+            // Create particles
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                const angle = (i / 8) * Math.PI * 2;
+                particle.style.cssText = `
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 8px;
+                    height: 8px;
+                    background-color: var(--correct);
+                    border-radius: 50%;
+                    transform: translate(-50%, -50%);
+                    animation: particleAnimation 0.5s forwards;
+                    --random-x: ${Math.sin(angle) * 100}px;
+                `;
+                particle.style.setProperty('--random-x', `${Math.sin(angle) * 100}px`);
+                correctFx.appendChild(particle);
+            }
+            
+            setTimeout(() => {
+                correctFx.style.display = 'none';
+            }, 500);
+        }
+
+        function createWinParticles() {
+            winParticlesContainer.innerHTML = '';
+            
+            // Create many particles
+            for (let i = 0; i < 150; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random positions
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const size = 5 + Math.random() * 10;
+                const duration = 1 + Math.random() * 3;
+                const delay = Math.random() * 2;
+                
+                // Random colors for a festive effect
+                const colors = ['#FFD700', '#FF3C5F', '#5F3CFF', '#3CFF5F', '#FF9500'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.style.cssText = `
+                    left: ${x}%;
+                    top: ${y}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background-color: ${color};
+                    animation: particleAnimation ${duration}s ${delay}s forwards;
+                    --random-x: ${(Math.random() - 0.5) * 200}px;
+                `;
+                
+                winParticlesContainer.appendChild(particle);
+            }
+        }
+
+        function animateScoreIncrement(player, amount) {
+            const playerElement = document.querySelector(`.player.${player}`);
+            const scoreIncrement = document.createElement('div');
+            scoreIncrement.className = 'score-increment';
+            scoreIncrement.textContent = `+${amount}`;
+            
+            playerElement.appendChild(scoreIncrement);
+            
+            setTimeout(() => {
+                scoreIncrement.remove();
+            }, 1000);
+        }
+
+        // Event listeners
+        scriptOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                option.classList.toggle('selected');
+            });
+        });
+
+        questionTypeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                option.classList.toggle('selected');
+                
+                // Make sure at least one question type is selected
+                const anySelected = Array.from(questionTypeOptions).some(opt => opt.classList.contains('selected'));
+                if (!anySelected) {
+                    option.classList.add('selected');
+                }
+            });
+        });
+
+        timeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                timeOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                gameState.timeLimit = parseInt(option.dataset.time);
+            });
+        });
+
+        startBtn.addEventListener('click', startGame);
+        playAgainBtn.addEventListener('click', resetGame);
+
+        answerOptions.forEach(option => {
+            option.addEventListener('click', (e) => {
+                if (gameState.humanAnswered || gameState.waitingForNextQuestion) return;
+                
+                const index = parseInt(e.target.dataset.index);
+                humanAnswer(index);
+            });
+        });
+
+        typingInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !gameState.humanAnswered && !gameState.waitingForNextQuestion) {
+                submitTypedAnswer();
+            }
+        });
+
+        submitAnswerBtn.addEventListener('click', () => {
+            if (!gameState.humanAnswered && !gameState.waitingForNextQuestion) {
+                submitTypedAnswer();
+            }
+        });
+
+        // Game functions
+        function startGame() {
+            // Initialize audio context with user interaction
+            initAudio();
+            
+            // Collect selected scripts
+            gameState.selectedScripts = [];
+            scriptOptions.forEach(option => {
+                if (option.classList.contains('selected')) {
+                    gameState.selectedScripts.push(option.dataset.script);
+                }
+            });
+
+            // Validate selection
+            if (gameState.selectedScripts.length === 0) {
+                alert('Please select at least one script type to practice.');
+                return;
+            }
+
+            // Collect selected question types
+            gameState.selectedQuestionTypes = [];
+            questionTypeOptions.forEach(option => {
+                if (option.classList.contains('selected')) {
+                    gameState.selectedQuestionTypes.push(option.dataset.type);
+                }
+            });
+
+            // Get selected time limit
+            const selectedTimeOption = document.querySelector('.time-option.selected');
+            if (selectedTimeOption) {
+                gameState.timeLimit = parseInt(selectedTimeOption.dataset.time);
+            }
+
+            // Reset streak
+            gameState.streakCount = 0;
+            gameState.streakMultiplier = 1;
+            streakCounter.style.display = 'none';
+            streakCountDisplay.textContent = '0';
+
+            // Prepare questions
+            prepareQuestions();
+
+            // Switch to game screen
+            setupScreen.style.display = 'none';
+            gameScreen.style.display = 'flex';
+
+            // Start the first question
+            showQuestion();
+        }
+
+        function prepareQuestions() {
+            // Combine all selected script data
+            let allData = [];
+            gameState.selectedScripts.forEach(script => {
+                allData = [...allData, ...scriptData[script]];
+            });
+
+            // Randomly select questions
+            gameState.questions = [];
+            const totalQuestions = Math.min(gameState.totalQuestions, allData.length);
+            
+            for (let i = 0; i < totalQuestions; i++) {
+                // Select a random question type from user's choices
+                const randomTypeIndex = Math.floor(Math.random() * gameState.selectedQuestionTypes.length);
+                const questionType = gameState.selectedQuestionTypes[randomTypeIndex];
+                
+                // Select a character
+                const randomIndex = Math.floor(Math.random() * allData.length);
+                const selectedItem = allData[randomIndex];
+                
+                // Prepare the question based on type
+                let question;
+                
+                if (questionType === 'select-romaji') {
+                    // Standard question - select romaji/meaning for character
+                    const valueToMatch = gameState.selectedScripts.includes('kanji') && selectedItem.meaning ? 'meaning' : 'romaji';
+                    const correctAnswer = selectedItem[valueToMatch];
+                    const incorrectOptions = generateIncorrectOptions(allData, selectedItem, valueToMatch);
+                    
+                    // Mix the options
+                    const options = [...incorrectOptions];
+                    const correctPosition = Math.floor(Math.random() * 4);
+                    options.splice(correctPosition, 0, correctAnswer);
+                    
+                    question = {
+                        character: selectedItem.character,
+                        question: selectedItem.character,
+                        prompt: valueToMatch === 'meaning' ? "Select the correct meaning:" : "Select the correct romaji:",
+                        questionType: questionType,
+                        valueType: valueToMatch,
+                        options: options.slice(0, 4),
+                        correctIndex: correctPosition,
+                        correctAnswer: correctAnswer
+                    };
+                }
+                else if (questionType === 'select-character') {
+                    // Reverse question - select character for romaji/meaning
+                    const valueToShow = gameState.selectedScripts.includes('kanji') && selectedItem.meaning ? 'meaning' : 'romaji';
+                    const valueToShow2 = valueToShow === 'meaning' ? 'romaji' : 'meaning';
+                    
+                    // Generate incorrect character options
+                    const incorrectOptions = generateIncorrectCharacterOptions(allData, selectedItem);
+                    
+                    // Mix the options
+                    const options = [...incorrectOptions];
+                    const correctPosition = Math.floor(Math.random() * 4);
+                    options.splice(correctPosition, 0, selectedItem.character);
+                    
+                    let promptText = valueToShow === 'meaning' ? 
+                        `Select the character for: ${selectedItem.meaning}` : 
+                        `Select the character for: ${selectedItem.romaji}`;
+                    
+                    if (selectedItem.meaning && valueToShow === 'romaji') {
+                        promptText += ` (${selectedItem.meaning})`;
+                    }
+                    
+                    question = {
+                        character: selectedItem.character,
+                        question: selectedItem[valueToShow],
+                        questionInfo: selectedItem[valueToShow2],
+                        prompt: promptText,
+                        questionType: questionType,
+                        valueType: valueToShow,
+                        options: options.slice(0, 4),
+                        correctIndex: correctPosition,
+                        correctAnswer: selectedItem.character
+                    };
+                }
+                else if (questionType === 'type-romaji') {
+                    // Typing question - type romaji/meaning for character
+                    const valueToMatch = gameState.selectedScripts.includes('kanji') && selectedItem.meaning ? 'meaning' : 'romaji';
+                    
+                    question = {
+                        character: selectedItem.character,
+                        question: selectedItem.character,
+                        prompt: valueToMatch === 'meaning' ? "Type the correct meaning:" : "Type the correct romaji:",
+                        questionType: questionType,
+                        valueType: valueToMatch,
+                        correctAnswer: selectedItem[valueToMatch]
+                    };
+                }
+                
+                gameState.questions.push(question);
+                
+                // Remove this item to avoid repetition
+                allData.splice(randomIndex, 1);
+            }
+            
+            gameState.currentQuestionIndex = 0;
+        }
+
+        function generateIncorrectOptions(allData, selectedItem, valueType) {
+            let potentialOptions = allData.filter(item => item[valueType] && item[valueType] !== selectedItem[valueType]);
+            
+            // If we don't have enough options, create modified versions
+            if (potentialOptions.length < 3) {
+                if (valueType === 'meaning') {
+                    return ['wrong answer 1', 'wrong answer 2', 'wrong answer 3'].filter(
+                        o => o !== selectedItem.meaning
+                    );
+                } else {
+                    // Create variations for romaji
+                    const similar = [
+                        swap2letters(selectedItem.romaji),
+                        replaceVowel(selectedItem.romaji),
+                        addOrRemoveLetter(selectedItem.romaji)
+                    ];
+                    return similar;
+                }
+            }
+            
+            // Randomly select 3 different incorrect options
+            const result = [];
+            while (result.length < 3 && potentialOptions.length > 0) {
+                const randIdx = Math.floor(Math.random() * potentialOptions.length);
+                const option = potentialOptions[randIdx][valueType];
+                
+                if (!result.includes(option)) {
+                    result.push(option);
+                }
+                potentialOptions.splice(randIdx, 1);
+            }
+            
+            return result;
+        }
+
+        function generateIncorrectCharacterOptions(allData, selectedItem) {
+            // Find characters from the same script category
+            const scriptType = determineScriptType(selectedItem.character);
+            let potentialOptions = allData.filter(item => 
+                determineScriptType(item.character) === scriptType && 
+                item.character !== selectedItem.character
+            );
+            
+            // If we don't have enough options, just use any other characters
+            if (potentialOptions.length < 3) {
+                potentialOptions = allData.filter(item => item.character !== selectedItem.character);
+            }
+            
+            // Randomly select 3 different incorrect options
+            const result = [];
+            while (result.length < 3 && potentialOptions.length > 0) {
+                const randIdx = Math.floor(Math.random() * potentialOptions.length);
+                const option = potentialOptions[randIdx].character;
+                
+                if (!result.includes(option)) {
+                    result.push(option);
+                }
+                potentialOptions.splice(randIdx, 1);
+            }
+            
+            return result;
+        }
+
+        function determineScriptType(character) {
+            const code = character.charCodeAt(0);
+            if (code >= 0x3040 && code <= 0x309F) return 'hiragana';
+            if (code >= 0x30A0 && code <= 0x30FF) return 'katakana';
+            return 'kanji';
+        }
+
+        function swap2letters(str) {
+            if (str.length < 2) return str + 'a';
+            const pos = Math.floor(Math.random() * (str.length - 1));
+            return str.substring(0, pos) + 
+                   str.charAt(pos + 1) + 
+                   str.charAt(pos) + 
+                   str.substring(pos + 2);
+        }
+
+        function replaceVowel(str) {
+            const vowels = ['a', 'e', 'i', 'o', 'u'];
+            const positions = [];
+            
+            for (let i = 0; i < str.length; i++) {
+                if (vowels.includes(str[i])) {
+                    positions.push(i);
+                }
+            }
+            
+            if (positions.length === 0) return str + 'a';
+            
+            const posIndex = Math.floor(Math.random() * positions.length);
+            const pos = positions[posIndex];
+            
+            const currentVowel = str[pos];
+            const otherVowels = vowels.filter(v => v !== currentVowel);
+            const newVowel = otherVowels[Math.floor(Math.random() * otherVowels.length)];
+            
+            return str.substring(0, pos) + newVowel + str.substring(pos + 1);
+        }
+
+        function addOrRemoveLetter(str) {
+            if (Math.random() > 0.5 && str.length > 1) {
+                // Remove a random letter
+                const pos = Math.floor(Math.random() * str.length);
+                return str.substring(0, pos) + str.substring(pos + 1);
+            } else {
+                // Add a random letter
+                const letters = 'abcdefghijklmnopqrstuvwxyz';
+                const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+                const pos = Math.floor(Math.random() * (str.length + 1));
+                return str.substring(0, pos) + randomLetter + str.substring(pos);
+            }
+        }
+
+        function showQuestion() {
+            if (gameState.currentQuestionIndex >= gameState.questions.length) {
+                endGame();
+                return;
+            }
+            
+            const question = gameState.questions[gameState.currentQuestionIndex];
+            
+            // Display the question with a small animation
+            questionElement.style.transform = 'scale(0.9)';
+            questionElement.style.opacity = '0.5';
+            questionElement.textContent = question.question;
+            
+            setTimeout(() => {
+                questionElement.style.transform = 'scale(1)';
+                questionElement.style.opacity = '1';
+            }, 50);
+            
+            questionPromptElement.textContent = question.prompt;
+            
+            // Reset UI state
+            answerOptions.forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+            });
+            
+            feedbackMessage.textContent = '';
+            feedbackMessage.classList.remove('correct', 'incorrect');
+            
+            // Hide bot indicators
+            botIndicators.bot1.style.display = 'none';
+            botIndicators.bot1.textContent = '';
+            botIndicators.bot1.classList.remove('correct', 'incorrect');
+            
+            botIndicators.bot2.style.display = 'none';
+            botIndicators.bot2.textContent = '';
+            botIndicators.bot2.classList.remove('correct', 'incorrect');
+            
+            // Configure UI based on question type
+            if (question.questionType === 'type-romaji') {
+                answerGrid.style.display = 'none';
+                typingAnswerContainer.style.display = 'block';
+                typingInput.value = '';
+                typingInput.focus();
+            } else {
+                answerGrid.style.display = 'grid';
+                typingAnswerContainer.style.display = 'none';
+                
+                // Display the answer options
+                answerOptions.forEach((option, index) => {
+                    option.textContent = question.options[index];
+                });
+            }
+            
+            // Reset state for this question
+            gameState.humanAnswered = false;
+            gameState.humanCorrect = false;
+            gameState.bot1Answered = false;
+            gameState.bot1Correct = false;
+            gameState.bot2Answered = false;
+            gameState.bot2Correct = false;
+            gameState.allPlayersAnswered = false;
+            gameState.waitingForNextQuestion = false;
+            
+            // Show streak counter if on a streak
+            if (gameState.streakCount > 1) {
+                streakCounter.style.display = 'flex';
+                streakCountDisplay.textContent = gameState.streakCount;
+            } else {
+                streakCounter.style.display = 'none';
+            }
+            
+            // Start timer
+            startTimer();
+            
+            // Bots start thinking
+            simulateBotAnswers();
+        }
+
+        function submitTypedAnswer() {
+            if (gameState.humanAnswered || gameState.waitingForNextQuestion) return;
+            
+            const question = gameState.questions[gameState.currentQuestionIndex];
+            const userAnswer = typingInput.value.trim().toLowerCase();
+            
+            // Check if answer is correct (more flexible matching for typed answers)
+            let correct = false;
+            
+            if (question.valueType === 'meaning') {
+                // For meaning, check if user answer contains the correct keywords
+                const correctAnswer = question.correctAnswer.toLowerCase();
+                correct = userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer);
+            } else {
+                // For romaji, allow some flexibility with common variations
+                const correctAnswer = question.correctAnswer.toLowerCase();
+                
+                // Clean up answers for comparison
+                const cleanUserAnswer = userAnswer.replace(/\s+/g, '');
+                const cleanCorrectAnswer = correctAnswer.replace(/\s+/g, '');
+                
+                correct = cleanUserAnswer === cleanCorrectAnswer;
+                
+                // Handle alternative acceptable answers
+                if (!correct) {
+                    // Common romaji variations
+                    if (cleanCorrectAnswer === 'shi' && cleanUserAnswer === 'si') correct = true;
+                    if (cleanCorrectAnswer === 'chi' && cleanUserAnswer === 'ti') correct = true;
+                    if (cleanCorrectAnswer === 'tsu' && cleanUserAnswer === 'tu') correct = true;
+                    if (cleanCorrectAnswer === 'zu' && cleanUserAnswer === 'du') correct = true;
+                    if (cleanCorrectAnswer === 'fu' && cleanUserAnswer === 'hu') correct = true;
+                    
+                    // For kanji readings that have multiple valid readings
+                    if (question.character === '四' && (cleanUserAnswer === 'shi' || cleanUserAnswer === 'yon')) correct = true;
+                    if (question.character === '七' && (cleanUserAnswer === 'shichi' || cleanUserAnswer === 'nana')) correct = true;
+                    if (question.character === '九' && (cleanUserAnswer === 'kyuu' || cleanUserAnswer === 'ku')) correct = true;
+                    
+                    // Check for answers with slashes (common in kanji readings)
+                    if (cleanCorrectAnswer.includes('/')) {
+                        const validAnswers = cleanCorrectAnswer.split('/');
+                        if (validAnswers.some(a => a === cleanUserAnswer)) {
+                            correct = true;
+                        }
+                    }
+                }
+            }
+            
+            // Play appropriate sound
+            if (correct) {
+                playCorrectSound();
+                createCorrectFx();
+            } else {
+                playIncorrectSound();
+            }
+            
+            // Show feedback
+            feedbackMessage.textContent = correct ? 
+                `Correct! The answer is: ${question.correctAnswer}` : 
+                `Incorrect. The correct answer is: ${question.correctAnswer}`;
+            feedbackMessage.classList.add(correct ? 'correct' : 'incorrect');
+            
+            // Process the answer
+            humanAnswer(correct ? 0 : -1, true);
+        }
+
+        function startTimer() {
+            // Clear any existing timer
+            if (gameState.timer) {
+                clearInterval(gameState.timer);
+            }
+            
+            // Set initial time
+            gameState.timeRemaining = gameState.timeLimit;
+            timerBar.style.width = '100%';
+            
+            // Start countdown
+            gameState.timer = setInterval(() => {
+                gameState.timeRemaining -= 100;
+                const percentLeft = (gameState.timeRemaining / gameState.timeLimit) * 100;
+                timerBar.style.width = `${percentLeft}%`;
+                
+                if (gameState.timeRemaining <= 0) {
+                    clearInterval(gameState.timer);
+                    
+                    // If human hasn't answered yet, it's a miss
+                    if (!gameState.humanAnswered) {
+                        const question = gameState.questions[gameState.currentQuestionIndex];
+                        
+                        if (question.questionType === 'type-romaji') {
+                            feedbackMessage.textContent = `Time's up! The correct answer is: ${question.correctAnswer}`;
+                            feedbackMessage.classList.add('incorrect');
+                        } else {
+                            // Show the correct answer
+                            answerOptions[question.correctIndex].classList.add('correct');
+                        }
+                        
+                        // Play incorrect sound
+                        playIncorrectSound();
+                        
+                        humanAnswer(-1);
+                    }
+                    
+                    // Mark time as expired
+                    gameState.timeExpired = true;
+                    
+                    // Check if we need to move to next question
+                    checkIfAllAnswered();
+                }
+            }, 100);
+        }
+
+        function simulateBotAnswers() {
+            const question = gameState.questions[gameState.currentQuestionIndex];
+            
+            // Bot 1 (敬語) - Very fast native Japanese speaker (150-350ms)
+            let bot1BaseTime;
+            if (question.questionType === 'type-romaji') {
+                // Typing takes longer
+                bot1BaseTime = 150 + (question.correctAnswer.length * 40);
+            } else {
+                // Reading familiar characters very quickly
+                bot1BaseTime = 150 + Math.random() * 200;
+            }
+            
+            botThinking.bot1.style.display = 'block';
+            
+            setTimeout(() => {
+                // Only process answer if time hasn't expired and not waiting for next question
+                if (gameState.timeRemaining > 0 && !gameState.waitingForNextQuestion) {
+                    botThinking.bot1.style.display = 'none';
+                    
+                    // 95% chance to be correct (敬語 is very good)
+                    const correct = Math.random() < 0.95;
+                    
+                    // Update bot1 state
+                    gameState.bot1Answered = true;
+                    gameState.bot1Correct = correct;
+                    
+                    // Award points to bot1 immediately
+                    if (correct) {
+                        const timeBonus = Math.max(1, Math.ceil(gameState.timeRemaining / 1000));
+                        const points = timeBonus * 10;
+                        gameState.scores.bot1 += points;
+                        playerScores.bot1.textContent = gameState.scores.bot1;
+                        
+                        // Show indicator
+                        botIndicators.bot1.textContent = "Correct +" + points;
+                        botIndicators.bot1.classList.add('correct');
+                        
+                        // Animate score
+                        animateScoreIncrement('bot1', points);
+                    } else {
+                        botIndicators.bot1.textContent = "Incorrect";
+                        botIndicators.bot1.classList.add('incorrect');
+                    }
+                    
+                    botIndicators.bot1.style.display = 'block';
+                    
+                    // Check if all players have answered
+                    checkIfAllAnswered();
+                }
+            }, bot1BaseTime);
+            
+            // Bot 2 (たろう) - Normal native Japanese speaker (250-500ms)
+            let bot2BaseTime;
+            if (question.questionType === 'type-romaji') {
+                // Typing takes longer
+                bot2BaseTime = 250 + (question.correctAnswer.length * 60);
+            } else {
+                // Reading is faster but slower than bot1
+                bot2BaseTime = 250 + Math.random() * 250;
+            }
+            
+            botThinking.bot2.style.display = 'block';
+            
+            setTimeout(() => {
+                // Only process answer if time hasn't expired and not waiting for next question
+                if (gameState.timeRemaining > 0 && !gameState.waitingForNextQuestion) {
+                    botThinking.bot2.style.display = 'none';
+                    
+                    // 85% chance to be correct
+                    const correct = Math.random() < 0.85;
+                    
+                    // Update bot2 state
+                    gameState.bot2Answered = true;
+                    gameState.bot2Correct = correct;
+                    
+                    // Award points to bot2 immediately
+                    if (correct) {
+                        const timeBonus = Math.max(1, Math.ceil(gameState.timeRemaining / 1000));
+                        const points = timeBonus * 10;
+                        gameState.scores.bot2 += points;
+                        playerScores.bot2.textContent = gameState.scores.bot2;
+                        
+                        // Show indicator
+                        botIndicators.bot2.textContent = "Correct +" + points;
+                        botIndicators.bot2.classList.add('correct');
+                        
+                        // Animate score
+                        animateScoreIncrement('bot2', points);
+                    } else {
+                        botIndicators.bot2.textContent = "Incorrect";
+                        botIndicators.bot2.classList.add('incorrect');
+                    }
+                    
+                    botIndicators.bot2.style.display = 'block';
+                    
+                    // Check if all players have answered
+                    checkIfAllAnswered();
+                }
+            }, bot2BaseTime);
+        }
+
+        function humanAnswer(answerIndex, isTypedAnswer = false) {
+            if (gameState.humanAnswered || gameState.waitingForNextQuestion) return;
+            
+            const question = gameState.questions[gameState.currentQuestionIndex];
+            let correct;
+            
+            if (isTypedAnswer) {
+                // For typed answers, answerIndex is already the correctness (true/false)
+                correct = answerIndex === 0;
+            } else {
+                correct = answerIndex === question.correctIndex;
+                
+                // Play appropriate sound
+                if (correct) {
+                    playCorrectSound();
+                    createCorrectFx();
+                } else {
+                    playIncorrectSound();
+                }
+                
+                // Visual feedback for selection questions
+                if (answerIndex !== -1) {
+                    answerOptions[answerIndex].classList.add(correct ? 'correct' : 'incorrect');
+                }
+                
+                // Always show the correct answer for selection questions
+                answerOptions[question.correctIndex].classList.add('correct');
+            }
+            
+            // Mark player as answered
+            gameState.humanAnswered = true;
+            gameState.humanCorrect = correct;
+            
+            // Update score for human player immediately
+            if (correct) {
+                // Handle streak
+                gameState.streakCount++;
+                
+                // Every 3 consecutive correct answers increases multiplier
+                if (gameState.streakCount % 3 === 0) {
+                    gameState.streakMultiplier++;
+                }
+                
+                // Points based on speed and streak multiplier
+                const timeBonus = Math.max(1, Math.ceil(gameState.timeRemaining / 1000));
+                const streakBonus = gameState.streakMultiplier;
+                const points = timeBonus * 10 * streakBonus;
+                
+                gameState.scores.human += points;
+                playerScores.human.textContent = gameState.scores.human;
+                
+                // Animate the score
+                animateScoreIncrement('human', points);
+                
+                // Update streak counter if visible
+                if (gameState.streakCount > 1) {
+                    streakCounter.style.display = 'flex';
+                    streakCountDisplay.textContent = gameState.streakCount;
+                    
+                    if (gameState.streakMultiplier > 1) {
+                        streakCounter.textContent = `🔥 ${gameState.streakCount} (${gameState.streakMultiplier}x)`;
+                    } else {
+                        streakCounter.textContent = `🔥 ${gameState.streakCount}`;
+                    }
+                }
+            } else {
+                // Reset streak on incorrect answer
+                gameState.streakCount = 0;
+                gameState.streakMultiplier = 1;
+                streakCounter.style.display = 'none';
+            }
+            
+            // Check if all players have answered
+            checkIfAllAnswered();
+        }
+
+        function checkIfAllAnswered() {
+            if (gameState.waitingForNextQuestion) return;
+            
+            // Check if all players have answered or time is up
+            const allAnswered = (gameState.humanAnswered && gameState.bot1Answered && gameState.bot2Answered) 
+                               || gameState.timeRemaining <= 0;
+            
+            if (allAnswered) {
+                gameState.allPlayersAnswered = true;
+                gameState.waitingForNextQuestion = true;
+                
+                // Clear the timer if it's still running
+                if (gameState.timer) {
+                    clearInterval(gameState.timer);
+                }
+                
+                // If the question is multiple choice, show the correct answer
+                const question = gameState.questions[gameState.currentQuestionIndex];
+                if (question.questionType !== 'type-romaji' && !gameState.humanAnswered) {
+                    answerOptions[question.correctIndex].classList.add('correct');
+                }
+                
+                // Move to next question after a delay
+                setTimeout(nextQuestion, 1500);
+            }
+        }
+
+        function nextQuestion() {
+            gameState.currentQuestionIndex++;
+            showQuestion();
+        }
+
+        function endGame() {
+            stopGameMusic();
+            // Update final scores
+            finalScores.human.textContent = gameState.scores.human;
+            finalScores.bot1.textContent = gameState.scores.bot1;
+            finalScores.bot2.textContent = gameState.scores.bot2;
+            
+            // Determine if player won or tied
+            const humanScore = gameState.scores.human;
+            const bot1Score = gameState.scores.bot1;
+            const bot2Score = gameState.scores.bot2;
+            
+            // Add crown to winner
+            document.querySelectorAll('.winner-crown').forEach(crown => crown.remove());
+            
+            const playerWon = humanScore >= bot1Score && humanScore >= bot2Score;
+            const isTie = humanScore === bot1Score || humanScore === bot2Score;
+            
+            // Create explosion effect for win or tie
+            if (playerWon) {
+                createWinParticles();
+                playWinSound();
+                
+                // Add crown to player
+                const crown = document.createElement('div');
+                crown.className = 'winner-crown';
+                crown.textContent = '👑';
+                document.querySelector('.final-player.human').appendChild(crown);
+                
+                // Add crown to any tied bots
+                if (humanScore === bot1Score) {
+                    const bot1Crown = document.createElement('div');
+                    bot1Crown.className = 'winner-crown';
+                    bot1Crown.textContent = '👑';
+                    document.querySelector('.final-player.bot1').appendChild(bot1Crown);
+                }
+                
+                if (humanScore === bot2Score) {
+                    const bot2Crown = document.createElement('div');
+                    bot2Crown.className = 'winner-crown';
+                    bot2Crown.textContent = '👑';
+                    document.querySelector('.final-player.bot2').appendChild(bot2Crown);
+                }
+            } else {
+                // Add crown to winner(s)
+                if (bot1Score >= humanScore && bot1Score >= bot2Score) {
+                    const bot1Crown = document.createElement('div');
+                    bot1Crown.className = 'winner-crown';
+                    bot1Crown.textContent = '👑';
+                    document.querySelector('.final-player.bot1').appendChild(bot1Crown);
+                }
+                
+                if (bot2Score >= humanScore && bot2Score >= bot1Score) {
+                    const bot2Crown = document.createElement('div');
+                    bot2Crown.className = 'winner-crown';
+                    bot2Crown.textContent = '👑';
+                    document.querySelector('.final-player.bot2').appendChild(bot2Crown);
+                }
+            }
+            
+            // Switch to results screen
+            gameScreen.style.display = 'none';
+            resultsScreen.style.display = 'flex';
+        }
+
+        function resetGame() {
+            // Clear win particles
+            winParticlesContainer.innerHTML = '';
+            
+            // Reset game state
+            gameState.scores = {
+                human: 0,
+                bot1: 0,
+                bot2: 0
+            };
+            
+            // Update displayed scores
+            playerScores.human.textContent = '0';
+            playerScores.bot1.textContent = '0';
+            playerScores.bot2.textContent = '0';
+            
+            // Reset streak
+            gameState.streakCount = 0;
+            gameState.streakMultiplier = 1;
+            streakCounter.style.display = 'none';
+            
+            // Switch back to setup screen
+            resultsScreen.style.display = 'none';
+            setupScreen.style.display = 'flex';
+        }</script><audio id="gameMusic" loop><source src="mansion.mp3" type="audio/mp3"></audio></body></html>
